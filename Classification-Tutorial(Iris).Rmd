@@ -1,0 +1,179 @@
+---
+title: "Introduction to Classification"
+author: "Jonathan Monteiro"
+date: "2/3/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+The focus of this tutorial will be on the basics of the "Classification" machine learning method. 
+
+Within this tutorial, we will explain:
+
+-What is Machine Learning
+
+-What is Classification
+
+-How to Create a Classification Model using R
+
+## What is Machine Learning?
+
+Machine Learning (ML) is the science of providing computers the ability to think, learn and adapt from experience without being explicitedly programmed to do so. This is achieved through allowing computers to utilize data to make their own decisons. 
+
+With the recent explosion of Big Data, Machine Learning has become increasingly complex and can be seen in various aspects of our society. Examples of Machine Learning would include
+
+- Speech recognition
+
+- Self driving cars
+
+- Recommendations based on search history
+
+
+## Types of Machine Learning 
+
+There are 3 types of Machine Learning. The first type is "Supervised Learning." 
+
+Supervised Learning is a learning approach that utilizes labeled input variables in order to predict the output variables. The algorithm learns trough analyzing training data and then creates a model for predicting output values. 
+
+An example of supervised learning would be predicting a home's price based on it's square footage, number of bedrooms and bathrooms.
+
+## Unsupervised Learning
+
+The next type is "Unsupervised Learning." 
+
+Unsupervised Learning is a learning method that utilizes unlabeled data. Due to the data being unlabeled, the algorithm does not know what the output values are. Thus, the algorithm must draw inferences from the dataset by noticing hidden patterns and structures within the data.
+
+An example of unsupervised learning would be grouping a collection of insect photos by their species based on patterns within the photos.
+
+## Reinforcement Learning
+
+The third type is "Reinforcement Learning."
+
+Reinforcement Learning is a learning method that focuses on making decisions sequentially and learning from each instance. The model will provide an ouput, and the user must decide whether to reward or punish the model based upon that output.
+
+An example of reinforcement learning would be teaching a computer how to play chess by rewarding or punishing it based on the move that it makes. 
+
+
+## What is Classification?
+
+Classification is a statistical machine learning approach that aims to predict the class of the output varaible based upon the given input variables. Essentially, the model is tasked with categorizing the data into finite classes.
+
+<center>
+![](https://static.javatpoint.com/tutorial/machine-learning/images/classification-algorithm-in-machine-learning.png)
+
+## Examples of Classification
+
+Since the output variables are given, classification is a form of "Supervised Learning." 
+
+Examples of classification would include 
+
+- Determining if an email is "Spam" or "Not Spam" based on its text
+
+- Establishing whether a patient is "High Risk" or "Low Risk" for a heart attack based on health metrics
+
+- Categorizing individuals as having "Good" or "Bad" credit based on their credit applications
+
+## Classification in R
+
+For this tutorial, we will be using the "Iris" dataset to create a Classification model. 
+
+From the data, we will be using sepal length, sepal width, pedal length and pedal width in order to predict the "Species" of the Iris plant. 
+
+<center>
+![](https://lh3.googleusercontent.com/proxy/rixquVS51GNau9fx55xOlEkVRmc_9ZEVj7djIfTdCJdy3ktE9i3dsu9pRQ9gfGG1ECAspPKLbSfTsW92lPobS3CDUeRwIOvLMU3KgGhRNMjetqPRVWTvJWPoQeZUn9zr)
+
+```{r include=FALSE}
+library(caTools)
+library(rpart)
+```
+
+## Splitting
+
+In order to create a classification model, you must first split the data into training and testing sets. The training set will be used to teach the algorithm, and the testing set will be used to gauge it's performance.
+
+For splitting purposes, we will be using the "caTools" package. 
+
+```{r eval=FALSE, echo=TRUE}
+library(caTools)
+```
+
+## Splitting Cont.
+
+You generally want your training set to be siginificantly larger than your testing set. To split the data, use the "sample.split" function by inputting the output varibale and then setting your "Split Ratio" to the proportion you would like.
+
+```{r echo=TRUE}
+split.data <- sample.split(iris$Species,SplitRatio = 0.80)
+```
+
+After you have split the data, you may then choose which portion is your training set and which is your testing by using the subset function. 
+
+```{r echo=TRUE}
+training.set <- subset(iris,split.data==T)
+testing.set <- subset(iris,split.data==F)
+```
+
+## Creating the Classification Model
+
+Once you have split your data, it is time to begin building your classification model. 
+
+For this step, we will be using the "rpart" package. The "rpart" function allows us to create our classification model by first inputting the variables, followed by the data you would like to use.
+
+```{r echo=TRUE}
+library(rpart)
+classification.model <- rpart(Species~.,data=training.set)
+```
+
+The first variable represents the output variable we would like to predict, and the "~." represents all the other variables in the data frame used to make the prediction.
+
+## Testing the Classification Model
+
+Now that the classification model has been built, we will now use the test set on the model in order to gauge the model's performance.
+
+```{r echo=TRUE}
+Result <- predict(classification.model,testing.set,type="class")
+```
+
+Based on the result, we can now test to see how accurate the model is. 
+
+We can create a table to display how many times the model accurately predicted the species.
+
+## Classification Table
+
+```{r}
+table(testing.set$Species,Result)
+```
+
+The table showcases when the model's prediction and the data were identical in regards to the species of plant. 
+
+As shown, the model's predictions and data were identical for 10 out of 10 of the Setosas, 9 out of 10 of the Versicolors and 10 out of 10 of the Virginicas.
+
+## Model Accuracy
+
+In order to determine the models accuracy from the above table, you must add all of the diagonal values, and then divide that by all of the values within the table. 
+
+```{r echo=TRUE}
+#(10+9+10)/(10+9+1+10) = 29/30 = 0.96666
+```
+
+Based on this, we can determine that the classification model was **96.67** percent accurate when predicting the species. 
+
+## Conclusion
+
+And thus ends this tutorial on the basics of the "Classification" machine learning method. 
+
+To recap, we covered: 
+
+- Machine Learning
+
+- The "Classification" method
+
+- Creating a Classification model in R
+
+I hope you found this tutorial helpful. Various other projects and tutorials can be found on my GitHub at jgmonteirohub. 
+
+Have a great day!
