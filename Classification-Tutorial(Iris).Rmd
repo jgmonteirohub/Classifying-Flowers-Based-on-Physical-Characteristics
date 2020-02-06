@@ -61,7 +61,7 @@ An example of reinforcement learning would be teaching a computer how to play ch
 
 ## What is Classification?
 
-Classification is a statistical machine learning approach that aims to predict the class of the output varaible based upon the given input variables. Essentially, the model is tasked with categorizing the data into finite classes.
+Classification is a statistical machine learning approach that aims to predict the class of the output variable based upon the given input variables. Essentially, the model is tasked with categorizing the data into finite classes.
 
 <center>
 ![](https://static.javatpoint.com/tutorial/machine-learning/images/classification-algorithm-in-machine-learning.png)
